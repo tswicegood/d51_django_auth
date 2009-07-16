@@ -9,9 +9,6 @@ setup(
     author='Travis Swicegood',
     author_email='development@domain51.com',
     url='http://github.com/tswicegood/d51_django_auth',
-    package_dir={
-        'd51_django_auth': 'src',
-    },
     packages=[
         'd51_django_auth', 
     ],
