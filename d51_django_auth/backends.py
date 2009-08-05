@@ -23,7 +23,7 @@ class FacebookConnectBackend(object):
         except User.DoesNotExist:
             response = request.facebook.users.getInfo([request.facebook.uid], ['name'])
             [first_name, last_name] = response[0]['name'].split(' ', 1)
-            user = User()
+            user = self.user_manager.create()
             user.username = request.facebook.uid
             user.first_name = first_name
             user.last_name = last_name
