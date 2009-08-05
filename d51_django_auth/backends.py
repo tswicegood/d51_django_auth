@@ -1,7 +1,14 @@
 from django.contrib.auth.models import User
 from facebook import Facebook
 
+FACEBOOK_CONNECT_BACKEND_STRING = 'd51_django_auth.backends.FacebookConnectBackend'
+
 class FacebookConnectBackend(object):
+    def __init__(self, user_manager = None):
+        self.user_manager = user_manager
+        if not self.user_manager:
+            self.user_manager = User.objects
+
     def authenticate(self, **credentials):
         if not credentials.has_key('request'):
             return None
@@ -10,9 +17,9 @@ class FacebookConnectBackend(object):
         if not request.facebook.check_session(request):
             return None
         
-        request.user.backend = 'd51_django_auth.backends.FacebookConnectBackend'
+        request.user.backend = FACEBOOK_CONNECT_BACKEND_STRING
         try:
-            user = User.objects.get(username = request.facebook.uid)
+            user = self.user_manager.get(username = request.facebook.uid)
         except User.DoesNotExist:
             response = request.facebook.users.getInfo([request.facebook.uid], ['name'])
             [first_name, last_name] = response[0]['name'].split(' ', 1)
