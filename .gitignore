@@ -1,3 +1,9 @@
 build/
 *.pyc
 .*.swp
+bin/buildout
+bin/django*
+.installed.cfg
+downloads/*
+eggs/*
+parts/*
