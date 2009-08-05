@@ -25,6 +25,15 @@ class TestOfFacebookConnectBackend(TestCase):
         mox.Verify(facebook)
         mox.Verify(req)
 
+    def test_user_manager_defaults_to_main_UserManager_if_not_specified(self):
+        auth = FacebookConnectBackend()
+        self.assertTrue(isinstance(auth.user_manager, UserManager))
+
+    def test_uses_custom_user_manager_if_provided(self):
+        obj = object()
+        auth = FacebookConnectBackend(user_manager = obj)
+        self.assertEquals(obj, auth.user_manager)
+
     def test_returns_user_if_found(self):
         random_id = random(10, 100)
         user = mox.MockObject(User)
