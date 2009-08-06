@@ -19,12 +19,12 @@ class FacebookConnectBackend(object):
         
         request.user.backend = FACEBOOK_CONNECT_BACKEND_STRING
         try:
-            user = self.user_manager.get(username = "fb:%d" % request.facebook.uid)
+            user = self.user_manager.get(username = "fb$%d" % request.facebook.uid)
         except User.DoesNotExist:
             response = request.facebook.users.getInfo([request.facebook.uid], ['name'])
             [first_name, last_name] = response[0]['name'].split(' ', 1)
             user = self.user_manager.create()
-            user.username = "fb:%d" % request.facebook.uid
+            user.username = "fb$%d" % request.facebook.uid
             user.first_name = first_name
             user.last_name = last_name
             user.set_unusable_password()
