@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import logout as django_logout
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -31,3 +33,15 @@ def facebook_xd_receiver(request):
     <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/XdCommReceiver.js" type="text/javascript"></script>
 </body>
 </html>""")
+
+def facebook_logout(request, *args, **kwargs):
+    """ Handles logging a user out of system after logging out of FB Connect
+
+        This passes off to django.contrib.auth.views.logout to handle the
+        Django specific pieces after it deletes the appropriate cookies
+        for Facebook Connect.
+    """
+    response = django_logout(request, *args, **kwargs)
+    response.delete_cookie("fbsetting_%s" % settings.FACEBOOK_API_KEY)
+    return response
+
