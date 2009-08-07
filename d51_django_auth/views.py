@@ -42,6 +42,10 @@ def facebook_logout(request, *args, **kwargs):
         for Facebook Connect.
     """
     response = django_logout(request, *args, **kwargs)
-    response.delete_cookie("fbsetting_%s" % settings.FACEBOOK_API_KEY)
-    return response
 
+    api_key_len = len(settings.FACEBOOK_API_KEY)
+    for (cookie_name, cookie_value) in request.COOKIES.iteritems():
+        if cookie_name[0:api_key_len] != settings.FACEBOOK_API_KEY:
+            continue
+        response.delete_cookie(cookie_name)
+    return response
