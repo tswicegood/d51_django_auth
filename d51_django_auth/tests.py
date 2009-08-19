@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, UserManager
+from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test.client import Client
 from django.http import HttpRequest
 from d51_django_auth.backends import FacebookConnectBackend, FACEBOOK_CONNECT_BACKEND_STRING
 from facebook import Facebook
@@ -117,4 +119,10 @@ class TestOfNewUsersCreatedByBackend(TestCase):
 
         auth = FacebookConnectBackend(user_manager = user_manager)
         new_user = auth.authenticate(request = req)
+
+class TestOfTwitterViews(TestCase):
+    def test_generates_405_on_non_post(self):
+        c = Client()
+        response = c.get(reverse('d51_django_auth.views.twitter.initiate_login'))
+        self.assertEqual(405, response.status_code)
 

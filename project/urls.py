@@ -2,6 +2,7 @@
 from django.conf.urls.defaults import patterns, include, handler500
 from django.conf import settings
 from django.contrib import admin
+from d51_django_auth.views import facebook, twitter
 admin.autodiscover()
 
 handler500 # Pyflakes
@@ -10,6 +11,8 @@ urlpatterns = patterns(
     '',
     (r'^admin/(.*)', admin.site.root),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+
+    (r'^twitter/initiate_login/$', twitter.initiate_login),
 )
 
 if settings.DEBUG:
