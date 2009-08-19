@@ -1,6 +1,7 @@
-
+from django import conf
 from django.contrib.auth.models import User
 from facebook import Facebook
+from oauthtwitter import OAuthApi
 
 FACEBOOK_CONNECT_BACKEND_STRING = 'd51_django_auth.backends.FacebookConnectBackend'
 
@@ -38,3 +39,15 @@ class FacebookConnectBackend(AbstractAuthBackend):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+class TwitterBackend(AbstractAuthBackend):
+    def __init__(self, **kwargs):
+        super(TwitterBackend, self).__init__(**kwargs)
+        # TODO: allow injection of settings
+        self.settings = conf.settings
+
+    def _get_twitter(self):
+        return OAuthApi(
+            self.settings.D51_DJANGO_AUTH['TWITTER']['CONSUMER_KEY'],
+            self.settings.D51_DJANGO_AUTH['TWITTER']['CONSUMER_SECRET']
+        )

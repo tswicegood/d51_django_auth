@@ -1,11 +1,14 @@
+from django.conf import settings
 from django.contrib.auth.models import User, UserManager
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 from django.http import HttpRequest
 from d51_django_auth.backends import FacebookConnectBackend, FACEBOOK_CONNECT_BACKEND_STRING
+from d51_django_auth.backends import TwitterBackend
 from facebook import Facebook
 import mox
+from oauthtwitter import OAuthApi
 from random import randint as random
 
 # Required to mock this out sync its generated dynamically and Mox
@@ -141,4 +144,15 @@ class TestOfTwitterViews(TestCase):
             expected_url,
             "should redirect to %s" % expected_url
         )
+
+class TestOfTwitterBackend_get_twitter(TestCase):
+    def test_returns_oauthapi(self):
+        auth = TwitterBackend()
+        self.assertTrue(isinstance(auth._get_twitter(), OAuthApi))
+
+    def test_uses_configured_settings(self):
+        auth = TwitterBackend()
+        consumer = auth._get_twitter()._Consumer
+        self.assertEquals(settings.D51_DJANGO_AUTH['TWITTER']['CONSUMER_KEY'], consumer.key)
+        self.assertEquals(settings.D51_DJANGO_AUTH['TWITTER']['CONSUMER_SECRET'], consumer.secret)
 
