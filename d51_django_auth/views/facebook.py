@@ -9,6 +9,8 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME):
     """ Handles logging in a user from Facebook Connect
 
         @todo redirect on invalid login
+        @todo This and twitter.login() are going to be almost identical,
+              refactor to remove duplication.
     """
     if not hasattr(request, 'facebook'):
         raise ImproperlyConfigured(
