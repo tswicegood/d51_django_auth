@@ -58,4 +58,6 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), "templates"),
 )
 
+if os.path.exists(os.path.join(os.path.dirname(__file__), 'local_settings.py')):
+    from local_settings import *
 

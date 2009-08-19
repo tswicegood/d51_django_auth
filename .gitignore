@@ -7,3 +7,4 @@ bin/django*
 downloads/*
 eggs/*
 parts/*
+project/local_settings.py
