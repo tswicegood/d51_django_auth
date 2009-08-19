@@ -4,12 +4,13 @@ from facebook import Facebook
 
 FACEBOOK_CONNECT_BACKEND_STRING = 'd51_django_auth.backends.FacebookConnectBackend'
 
-class FacebookConnectBackend(object):
+class AbstractAuthBackend(object):
     def __init__(self, user_manager = None):
         self.user_manager = user_manager
         if not self.user_manager:
             self.user_manager = User.objects
 
+class FacebookConnectBackend(AbstractAuthBackend):
     def authenticate(self, **credentials):
         if not credentials.has_key('request'):
             return None
