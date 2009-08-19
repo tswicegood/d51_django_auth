@@ -46,6 +46,9 @@ ROOT_URLCONF = 'project.urls'
 
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'd51_django_auth',
 )
 
