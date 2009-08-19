@@ -27,7 +27,7 @@ and run the following commands:
     ... will initialize buildout ...
     prompt> bin/buildout
     ... will take a few minutes while it downloads Django ...
-    prompt> bin/django test
+    prompt> bin/django test d51_django_auth
 
 You can also test it directly inside your Django project, by adding
 `d51_django_auth` to the `INSTALLED_APPS` setting and running the following
