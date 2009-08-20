@@ -11,6 +11,12 @@ class AbstractAuthBackend(object):
         if not self.user_manager:
             self.user_manager = User.objects
 
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+
 class FacebookConnectBackend(AbstractAuthBackend):
     def authenticate(self, **credentials):
         if not credentials.has_key('request'):
@@ -34,11 +40,6 @@ class FacebookConnectBackend(AbstractAuthBackend):
 
         return user
 
-    def get_user(self, user_id):
-        try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
-            return None
 
 class TwitterBackend(AbstractAuthBackend):
     def __init__(self, **kwargs):
