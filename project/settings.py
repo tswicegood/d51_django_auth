@@ -50,6 +50,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'd51_django_auth',
+    'd51_django_auth.facebook',
+    'd51_django_auth.twitter',
 )
 
 TEMPLATE_LOADERS = (
