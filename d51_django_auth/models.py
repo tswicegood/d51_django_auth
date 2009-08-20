@@ -1,7 +1,12 @@
-""" Place holder file so Django can load its tests.
+from django.contrib.auth.models import User
+from django.db import models
 
-Django assumes that every app that needs to be tested contains models,
-so this class pacifies that's assumption by Django.  We know that they
-say about assumptions, however...
+class TwitterToken(models.Model):
+    user = models.ForeignKey(User)
+    key = models.CharField(max_length = 100)
+    secret = models.CharField(max_length = 100)
 
-"""
+    def get_oauth_token(self):
+        from oauth.oauth import OAuthToken
+        return OAuthToken(self.key, self.secret)
+
