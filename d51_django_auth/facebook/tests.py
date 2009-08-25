@@ -30,14 +30,13 @@ class TestOfFacebookConnectBackend(TestCase):
         facebook = mox.MockObject(Facebook)
         facebook.check_session(req).AndReturn(False)
         req.facebook = facebook
-        mox.Replay(facebook)
-        mox.Replay(req)
+
+        replay_all(facebook, req)
 
         auth = FacebookConnectBackend()
         self.assertEqual(None, auth.authenticate(request = req))
 
-        mox.Verify(facebook)
-        mox.Verify(req)
+        verify_all(facebook, req)
 
     def test_user_manager_defaults_to_main_UserManager_if_not_specified(self):
         auth = FacebookConnectBackend()
