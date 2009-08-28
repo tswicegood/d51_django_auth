@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from oauthtwitter import OAuthApi
 
-def initiate_login(request):
+def initiate_login(request, redirect_field_name = auth.REDIRECT_FIELD_NAME):
     if request.method != 'POST':
         r = HttpResponse()
         r.status_code = 405
@@ -16,11 +16,12 @@ def initiate_login(request):
     )
     request_token = oauth.getRequestToken()
     request.session['twitter_request_token'] = request_token
+    request.session['redirect_to'] = request.REQUEST.get(redirect_field_name, '/')
     
     authorization_url = oauth.getAuthorizationURL(request_token)
     return redirect(authorization_url)
 
-def login(request, redirect_field_name = auth.REDIRECT_FIELD_NAME):
+def login(request):
     """ handle login requests for Twitter
 
         TODO: There's a ton of shared functionality between this and the
@@ -38,6 +39,5 @@ def login(request, redirect_field_name = auth.REDIRECT_FIELD_NAME):
     if not user is None:
         auth.login(request, user)
 
-    redirect_to = request.REQUEST.get(redirect_field_name, '/')
-    return HttpResponseRedirect(redirect_to)
+    return HttpResponseRedirect(request.session['redirect_to'])
 
